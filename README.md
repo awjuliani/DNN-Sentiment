@@ -10,7 +10,7 @@ such as works of literature once trained. Both can use word2vec to obtain pre-tr
 
 To train each model, run train_cnn.py and train_rnn.py.
 
-In order to obtain sentiment of a text file, run:
+### In order to obtain sentiment of a text file, run:
 
 `python generateSentiment.py textfile model checkpoint`
 
