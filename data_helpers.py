@@ -38,8 +38,8 @@ def load_data_and_labels():
     negative_examples = list(open("./data/rt-polaritydata/rt-polarity.neg", "r").readlines())
     negative_examples = [s.strip() for s in negative_examples]
     # Split by words
-    x_text = list(open("./trainUNK.txt", "r").readlines())
-    #x_text = positive_examples + negative_examples
+    #x_text = list(open("./trainUNK.txt", "r").readlines())
+    x_text = positive_examples + negative_examples
     x_text = [clean_str(sent) for sent in x_text]
     x_text = [s.split(" ") for s in x_text]
     # Generate labels
