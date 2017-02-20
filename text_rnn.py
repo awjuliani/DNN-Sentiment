@@ -1,5 +1,4 @@
 import tensorflow as tf
-from tensorflow.models.rnn import rnn, rnn_cell
 import numpy as np
 import os
 import time
@@ -65,7 +64,7 @@ def RNN(_X, _istate, _weights, _biases,embedding_size,keep_prob,n_hidden,n_steps
         _X = tf.matmul(_X, _weights['hidden']) + _biases['hidden']
 
         # Define a lstm cell with tensorflow
-        lstm_cell = rnn_cell.BasicLSTMCell(n_hidden, forget_bias=1.0)
+        lstm_cell = tf.contrib.rnn.BasicLSTMCell(n_hidden, forget_bias=1.0)
         # Split data because rnn cell needs a list of inputs for the RNN inner loop
         _X = tf.split(0, n_steps, _X) # n_steps * (batch_size, n_hidden)
 
