@@ -47,7 +47,7 @@ class TextRNN(object):
         self.pred = RNN(self.embedded_chars, self.istate, self.weights, self.biases,embedding_size,self.keep_prob,n_hidden,n_steps)
         self.fixedPred = tf.argmax
         # Define loss and optimizer
-        self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(self.pred, self.y)) # Softmax loss
+        self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=self.pred, labels=self.y)) # Softmax loss
         self.optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(self.cost) # Adam Optimizer
 
         # Evaluate model
@@ -64,12 +64,14 @@ def RNN(_X, _istate, _weights, _biases,embedding_size,keep_prob,n_hidden,n_steps
         _X = tf.matmul(_X, _weights['hidden']) + _biases['hidden']
 
         # Define a lstm cell with tensorflow
-        lstm_cell = tf.contrib.rnn.BasicLSTMCell(n_hidden, forget_bias=1.0)
+        lstm_cell = tf.contrib.rnn.BasicLSTMCell(n_hidden, forget_bias=1.0, state_is_tuple = False)
         # Split data because rnn cell needs a list of inputs for the RNN inner loop
-        _X = tf.split(0, n_steps, _X) # n_steps * (batch_size, n_hidden)
+        # _X = tf.split(0, n_steps, _X) # n_steps * (batch_size, n_hidden)
+        _X = tf.split(_X, n_steps, 0) # n_steps * (batch_size, n_hidden)
 
         # Get lstm cell output
-        outputs, states = rnn.rnn(lstm_cell, _X, initial_state=_istate)
+        # outputs, states = rnn.rnn(lstm_cell, _X, initial_state=_istate)
+        outputs, states = tf.contrib.rnn.static_rnn(lstm_cell, _X, initial_state=_istate)
         out_drop = tf.nn.dropout(outputs[-1],keep_prob)
         # Linear activation
         # Get inner loop last output
