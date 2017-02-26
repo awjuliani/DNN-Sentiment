@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.models.rnn import rnn, rnn_cell
+#from tensorflow.models.rnn import rnn, rnn_cell
 import numpy as np
 import os
 import time
